@@ -9,7 +9,7 @@ interface userPost {
     //https://cloud.cypherx.in/  register
 
     @POST("register")
-    fun sendUser(
+  fun sendUser(
         @Body DataType: dataType
     ): Call<dataType>
 }

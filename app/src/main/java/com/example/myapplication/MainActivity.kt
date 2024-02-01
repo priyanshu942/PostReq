@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,15 +16,32 @@ import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity() {
     private val topic= mutableListOf<String>("hellop","jiiii","ygyu","gfyt","helloscdcp","jdcdcdiiii","ddwdygyu","gfddssyt")
-    private val Hand:Handler= Handler()
+    private val handler: Handler = Handler()
+    private lateinit var userpost: userPost
+    private lateinit var text:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val text:TextView=findViewById(R.id.txt)
+         text=findViewById(R.id.txt)
         val retrofit=Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://cloud.cypherx.in/").build()
 
-        val userpost=retrofit.create(userPost::class.java)
+            userpost=retrofit.create(userPost::class.java)
+
+            schRepost()
+
+
+
+
+
+//        repeat(100)
+//        {
+//            Hand.postDelayed(run, 5000)
+//        }
+    }
+
+    private fun schRepost()
+    {
         val a =(9..99999999999999).random()
         val b =(9..99999999999999).random()
         val c =(9..99999999999999).random()
@@ -36,18 +54,20 @@ class MainActivity : AppCompatActivity() {
         callPost.enqueue(object : Callback<dataType> {
             override fun onResponse(call: Call<dataType>, response: Response<dataType>) {
                 text.text = response.code().toString()
+                Toast.makeText(this@MainActivity,"ok",Toast.LENGTH_SHORT).show()
+                handler.postDelayed(postRequestRunnable, 5000)
             }
 
             override fun onFailure(call: Call<dataType>, t: Throwable) {
                 text.text = t.message.toString()
+                Toast.makeText(this@MainActivity,"ok111",Toast.LENGTH_SHORT).show()
+                handler.postDelayed(postRequestRunnable, 5000)
             }
         })
+    }
 
-
-//        repeat(100)
-//        {
-//            Hand.postDelayed(run, 5000)
-//        }
+    private val postRequestRunnable = Runnable {
+        schRepost()
     }
 
 
